@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コピー</title>
+<style>
+html {
+ font-family: sans-serif;
+}
+body {
+ margin:  0;
+ padding: 0;
+ width: 100%;
+ background: #eeeeee;
+}
+.main {
+ margin: 5px;
+ border: 1px solid gray;
+ padding: 10px;
+ background: white;
+}
+.bt {
+ color: black;
+ -webkit-appearance: none;
+ background: linear-gradient(#ffffff, #cccccc);
+ border-radius: 99px;
+ display: block;
+ width: 90%;
+ margin: 10px auto;
+ padding: 10px;
+ box-shadow: 1px 1px 3px 0 black;
+ border: 1px solid gray;
+ font-size: 21px;
+}
+.bt:active {
+ background: gray;
+}
+.bt2 {
+ color: white;
+ -webkit-appearance: none;
+ background: gray;
+ border-radius: 5px;
+ display: inline-block;
+ padding: 5px 10px;
+ margin: 5px;
+ border: 1px solid black;
+ font-size: 16px;
+}
+.bt2:active {
+ background: lightgray;
+}
+#ta {
+ border: 1px solid black;
+ background-color: #eeeeee;
+ display: block;
+ margin: 5px auto;
+ width: 90%;
+ height: 5em;
+ font-size: 16px;
+}
+.r {
+text-align: right;
+}
+</style>
+</head>
+<body>
+<div class="main">
+<textarea id="ta"></textarea>
+<button class="bt" type="button" onclick="doCopy()">コピー</button>
+</div>
+<div class="r">
+<button class="bt2" type="button" onclick="saveLink()">保存</button>
+</div>
+<script>
+const ta = $('ta');
+const param = getparam();
+if (param != "") {
+    ta.value = decodeURIComponent(param);
+}
+function doCopy(){
+    if(typeof navigator.clipboard === 'object') {
+        navigator.clipboard.writeText(ta.value);
+        alert("コピーできました.");
+    } else {
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+    }
+}
+function saveLink() {
+    let url = window.location.href;
+    url = url.replace(location.search , '');
+    window.location.href = url +  "?s="+encodeURIComponent(ta.value);
+    alert("保存できました.\nこのページをブックマークに追加すれば\n同じ文章がコピーできます.");
+}
+function $(id){
+ return document.getElementById(id);
+}
+function getparam() {
+	var s = window.location.search;
+	var pat = /\?[^=]+=(.+)/;
+	if(pat.test(s)) {
+		const param = s.match(pat);
+		if(param[1]) {
+			return param[1];
+		} else {
+			return "";
+		}
+	}
+	return "";
+}
+</script>
+
+</body>
+</html>

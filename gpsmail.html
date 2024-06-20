@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPS Mail</title>
+<style>
+    * {
+         box-sizing: border-box;
+         font-family: sans-serif;
+         font-weight: normal;
+         -webkit-appearance: none;
+    }
+    body {
+      background-color: #555555;
+      margin: 0;
+      padding: 0;
+    }
+    .main {
+        color: white;
+        width:80%;
+        margin: 10% auto;
+        padding: 3px;
+    }
+    .ctrl {
+         border-radius: 9px;
+         background-color: #eeeeee;
+         margin: 0;
+         padding: 15px;
+    }
+    #mailadr {
+        border-radius: 9px;
+        border: 1px solid gray;
+        width: 100%;
+        margin: 5px auto;
+        padding: 10px;
+    }
+    button {
+      color: black;
+      border: 1px solid gray;
+      border-radius: 11px; 
+      display: block;
+      margin: 5px 0 5px auto;
+      padding: 5px 10px;
+    }
+</style>
+</head>
+<body>
+<div class="main">
+Send GPS data.
+    <div class="ctrl">
+      <input id="mailadr" type="email" placeholder="user@example.com">
+      <button type="button" onclick="sendGPS();">SendMail</button>
+    </div>
+</div>
+
+<script>
+const adr = $('mailadr');
+adr.value=getparam();
+function sendGPS() {
+    navigator.geolocation.getCurrentPosition(function(pos){
+        const latitude = pos.coords.latitude;
+        const longitude = pos.coords.longitude;
+        const maplink = "https://maps.google.com/maps?q="+latitude+","+longitude;
+        let strBody = "latitude:" + latitude + "\n";
+        strBody += "longitude:" + longitude + "\n\nMap Link:\n";
+        strBody += maplink;
+        let url = "mailto:"+adr.value;
+        url += "?subject=" + encodeURIComponent("I'm here. Sharing my GPS location.");
+        url += '&body='
++ encodeURIComponent(strBody);
+        location.href = url;
+    });
+}
+function getparam() {
+	var s = window.location.search;
+	var pat = /\?[^=]+=(.+)/;
+	if(pat.test(s)) {
+		const param = s.match(pat);
+		if(param[1]) {
+			return param[1];
+		} else {
+			return "";
+		}
+	}
+	return "";
+}
+function $(id){
+    return document.getElementById(id);
+}
+</script>
+</body>
+</html>
