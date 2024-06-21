@@ -119,7 +119,18 @@ let name1;
 let name2;
 let logar;
 let turn = -1;
-
+getLog();
+async function getLog() {
+	let p = getparam();
+	if(p === "") {
+		return;
+	}
+	let r = await fetch(p,{
+		mode:"cors"
+	});
+	let log = await r.text();
+	document.getElementById("ta").value = log;
+}
 function btl() {
 	ta = document.getElementById("ta");
 	usr1 = document.getElementById("usr1");
@@ -199,6 +210,19 @@ function next() {
 			mes.innerHTML = line;
 		}
 	}
+}
+function getparam() {
+	var s = window.location.search;
+	var pat = /\?[^=]+=(.+)/;
+	if(pat.test(s)) {
+		const param = s.match(pat);
+		if(param[1]) {
+			return param[1];
+		} else {
+			return "";
+		}
+	}
+	return "";
 }
 </script>
 </body>
