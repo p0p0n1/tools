@@ -1,120 +1,310 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>大乱闘ログビューア</title>
-<style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>大乱闘ログビューア</title>
+	<style>
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 html {
- font-family: sans-serif;
- width: 100%;
- height: 100%;
+	font-family: sans-serif;
+	width: 100%;
+	height: 100%;
 }
 body {
- margin:  0;
- padding: 0;
- width: 100%;
- height: 100%;
- background: #eeeeee;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: gray;
 }
-.main {
- height: 100%;
- padding: 10px;
- background: gray;
+.usr {
+	display: block;
+	margin: 15px 5px 5px 25px;
 }
 .usrinf {
- border: 2px solid white;
- border-radius: 7px;
- display: inline-block;
- width: 35%;
- color: white;
- padding: 5px;
- margin: 5px;
- background: black;
- max-width: 240px;
- font-size: 18px;
- box-shadow: 1px 1px 3px 0 black;
+	border: 2px solid white;
+	border-radius: 7px;
+	display: inline-block;
+	width: 35%;
+	color: white;
+	padding: 5px;
+	margin: 0;
+	background: black;
+	max-width: 240px;
+	font-size: 18px;
+	box-shadow: 1px 1px 3px 0 black;
+}
+.effect {
+	border-radius: 100%;
+	margin: 10px 5px;
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	vertical-align: top;
+}
+.fire {
+	animation: fireanim 300ms;
+}
+@keyframes fireanim {
+	0% {
+		background: rgba(192,0,0,0);
+	}
+	20% {
+		background: rgba(192,0,0,1);
+	}
+	40% {
+		background: rgba(192,0,0,0);
+	}
+	60% {
+		background: rgba(192,0,0,1);
+	}
+	80% {
+		background: rgba(192,0,0,0);
+	}
+	100% {
+		background: rgba(192,0,0,1);
+	}
+}
+.water {
+	animation: wateranim 300ms;
+}
+@keyframes wateranim {
+	0% {
+		background: rgba(64,128,255,0);
+	}
+	20% {
+		background: rgba(64,128,255,1);
+	}
+	40% {
+		background: rgba(128,192,255,0);
+	}
+	60% {
+		background: rgba(64,128,255,1);
+	}
+	80% {
+		background: rgba(64,128,255,0);
+	}
+	100% {
+		background: rgba(64,128,255,1);
+	}
+}
+.earth {
+	animation: earthanim 300ms;
+}
+@keyframes earthanim {
+	0% {
+		background: rgba(128,64,64,0);
+	}
+	20% {
+		background: rgba(128,64,64,1);
+	}
+	40% {
+		background: rgba(128,64,64,0);
+	}
+	60% {
+		background: rgba(128,64,64,1);
+	}
+	80% {
+		background: rgba(128,64,64,0);
+	}
+	100% {
+		background: rgba(128,64,64,1);
+	}
+}
+.wind {
+	animation: windanim 300ms;
+}
+@keyframes windanim {
+	0% {
+		background: rgba(64,192,64,0);
+	}
+	20% {
+		background: rgba(64,192,64,1);
+	}
+	40% {
+		background: rgba(64,192,64,0);
+	}
+	60% {
+		background: rgba(64,192,64,1);
+	}
+	80% {
+		background: rgba(64,192,64,0);
+	}
+	100% {
+		background: rgba(64,192,64,1);
+	}
+}
+.thunder {
+	animation: thunderanim 300ms;
+}
+@keyframes thunderanim {
+	0% {
+		background: rgba(240,240,64,0);
+	}
+	20% {
+		background: rgba(240,240,64,1);
+	}
+	40% {
+		background: rgba(240,240,64,0);
+	}
+	60% {
+		background: rgba(240,240,64,1);
+	}
+	80% {
+		background: rgba(240,240,64,0);
+	}
+	100% {
+		background: rgba(240,240,64,1);
+	}
+}
+.ice {
+	animation: iceanim 300ms;
+}
+@keyframes iceanim {
+	0% {
+		background: rgba(96,240,255,0);
+	}
+	20% {
+		background: rgba(96,240,255,1);
+	}
+	40% {
+		background: rgba(96,240,255,0);
+	}
+	60% {
+		background: rgba(96,240,255,1);
+	}
+	80% {
+		background: rgba(96,240,255,0);
+	}
+	100% {
+		background: rgba(96,240,255,1);
+	}
+}
+.light {
+	animation: lightanim 300ms;
+}
+@keyframes lightanim {
+	0% {
+		background: rgba(192,192,192,1);
+	}
+	20% {
+		background: rgba(255,255,255,1);
+	}
+	40% {
+		background: rgba(192,192,192,1);
+	}
+	60% {
+		background: rgba(255,255,255,1);
+	}
+	80% {
+		background: rgba(192,192,192,1);
+	}
+	100% {
+		background: rgba(255,255,255,1);
+	}
+}
+.dark {
+	animation: darkanim 300ms;
+}
+@keyframes darkanim {
+	0% {
+		background: rgba(160,0,240,1);
+	}
+	20% {
+		background: rgba(96,0,128,1);
+	}
+	40% {
+		background: rgba(160,0,240,1);
+	}
+	60% {
+		background: rgba(96,0,128,1);
+	}
+	80% {
+		background: rgba(160,0,240,1);
+	}
+	100% {
+		background: rgba(96,0,128,1);
+	}
 }
 .xanim {
- animation: xx 200ms;
+	animation: xx 200ms;
 }
 @keyframes xx {
- 0% {
- transform: translateX(0px);
- }
- 20% {
- transform: translateX(-5px);
- }
-40% {
- transform: translateX(5px);
- }
-60% {
- transform: translateX(3px);
- }
-80% {
- transform: translateX(-3px);
- }
-100% {
- transform: translateX(0px);
- }
+	0% {
+		transform: translateX(0px);
+	}
+	20% {
+		transform: translateX(-5px);
+	}
+	40% {
+		transform: translateX(5px);
+	}
+	60% {
+		transform: translateX(3px);
+	}
+	80% {
+		transform: translateX(-3px);
+	}
+	100% {
+		transform: translateX(0px);
+	}
 }
 .message {
- font-size: 18px;
- border-radius: 7px;
- border: 2px solid white;
- background: black;
- padding: 5px;
- margin: 3px
- width: 90%;
- color: white;
- max-width: 600px;
- box-shadow: 1px 1px 3px 0 black;
+	font-size: 18px;
+	border-radius: 7px;
+	border: 2px solid white;
+	background: black;
+	padding: 5px;
+	margin: 1px 15px;
+	width: 90%;
+	color: white;
+	max-width: 600px;
+	box-shadow: 1px 1px 3px 0 black;
 }
 #ta {
- background: #eeeeee;
- width: 90%;
- height: 5em;
+	display: block;
+	background: #eeeeee;
+	width: 90%;
+	height: 5em;
+	margin: 5px auto;
 }
 .btn {
-    display: block;
+	display: block;
 	border: 1px solid #333333;
-    background: linear-gradient(#eeeeee, #888888);
-    box-shadow: 1px 1px 3px 0 gray;
-    border-radius: 99px;
-    width: 50%;
-    padding: 10px;
-    margin: 5px auto;
-    font-size: 18px;
+	background: linear-gradient(#eeeeee, #888888);
+	box-shadow: 1px 1px 3px 0 gray;
+	border-radius: 99px;
+	width: 50%;
+	padding: 10px;
+	margin: 5px auto;
+	font-size: 18px;
 }
 .btn:active {
-    background: lightgray;
-    color: black;
+	background: lightgray;
+	color: black;
 }
-</style>
+	</style>
 </head>
+
 <body>
-<div class="main">
-<textarea id="ta" placeholder="ここに大乱闘ログを貼付け、開始を。黒窓を押せば進みます。名前にさん、さんさんが含まれているとバグります多分。"></textarea>
-<br>
-<button class="btn" type="button" onclick="btl()">開始</button><br>
-<div id="usr1" class="usrinf" onclick="next()">
-対戦者１<br>HP:
-</div>
-<div id="usr2" class="usrinf" onclick="next()">
-対戦者２<br>HP:
-</div>
-<div id="mes" class="message" onclick="next()">
-&nbsp;
-</div>
-</div>
+	<textarea id="ta" placeholder="ここに大乱闘ログを貼付け、開始を。黒窓を押せば進みます。"></textarea>
+	<button id="stbtn" class="btn" type="button" onclick="btl()">開始</button>
+	<div class="usr">
+		<div id="usr1" class="usrinf" onclick="next()">対戦者１<br>HP:</div>
+		<div id="effect" class="effect">&nbsp;</div>
+		<div id="usr2" class="usrinf" onclick="next()">対戦者２<br>HP:</div>
+	</div>
+	<div id="mes" class="message" onclick="next()">&nbsp;</div>
 <script>
 let ta;
 let usr1;
 let usr2;
 let mes;
+let effect;
 let name1;
 let name2;
 let logar;
@@ -122,26 +312,35 @@ let turn = -1;
 getLog();
 async function getLog() {
 	let p = getparam();
-	if(p === "") {
+	if (p === "") {
 		return;
 	}
 	let r = await fetch(p,{
-		mode:"cors"
+		mode: "cors"
 	});
 	let log = await r.text();
-	document.getElementById("ta").value = log;
+	let taelm = document.getElementById("ta");
+	taelm.style.display = "none";
+	taelm.value = log;
+	document.getElementById("stbtn").style.display = "none";
+	btl();
 }
+
 function btl() {
 	ta = document.getElementById("ta");
 	usr1 = document.getElementById("usr1");
 	usr2 = document.getElementById("usr2");
 	usr1.classList.remove("xanim");
 	usr2.classList.remove("xanim");
+	effect = document.getElementById("effect");
 	usr1.addEventListener("animationend", () => {
 		usr1.classList.remove("xanim");
 	});
 	usr2.addEventListener("animationend", () => {
 		usr2.classList.remove("xanim");
+	});
+	effect.addEventListener("animationend", () => {
+		init_effect();
 	});
 	mes = document.getElementById("mes");
 	const t = ta.value.replace(/\r\n?/, '\n');
@@ -161,9 +360,19 @@ function btl() {
 		mes.innerHTML = logar[0];
 	}
 }
-
+function init_effect() {
+	effect.classList.remove("fire");
+	effect.classList.remove("water");
+	effect.classList.remove("earth");
+	effect.classList.remove("wind");
+	effect.classList.remove("thunder");
+	effect.classList.remove("ice");
+	effect.classList.remove("light");
+	effect.classList.remove("dark");
+}
 function next() {
-	if(turn < 0) return;
+	init_effect();
+	if (turn < 0) return;
 	turn++;
 	if (turn == logar.length) {
 		btl();
@@ -187,6 +396,30 @@ function next() {
 	let r1 = m[0].match(pt1);
 	let r2 = m[1].match(pt2);
 	if ((r1 != null) && (r2 != null)) {
+		if(m[1].indexOf("の火ダメージを受け、[")>0) {
+			effect.classList.add("fire");
+		}
+		if(m[1].indexOf("の水ダメージを受け、[")>0) {
+			effect.classList.add("water");
+		}
+		if(m[1].indexOf("の土ダメージを受け、[")>0) {
+			effect.classList.add("earth");
+		}
+		if(m[1].indexOf("の風ダメージを受け、[")>0) {
+			effect.classList.add("wind");
+		}
+		if(m[1].indexOf("の雷ダメージを受け、[")>0) {
+			effect.classList.add("thunder");
+		}
+		if(m[1].indexOf("の氷ダメージを受け、[")>0) {
+			effect.classList.add("ice");
+		}
+		if(m[1].indexOf("の光ダメージを受け、[")>0) {
+			effect.classList.add("light");
+		}
+		if(m[1].indexOf("の闇ダメージを受け、[")>0) {
+			effect.classList.add("dark");
+		}
 		if (r1[1] == name1) {
 			if (r2[1] == name2) {
 				usr2.classList.remove("xanim");
@@ -211,12 +444,13 @@ function next() {
 		}
 	}
 }
+
 function getparam() {
 	var s = window.location.search;
 	var pat = /\?[^=]+=(.+)/;
-	if(pat.test(s)) {
+	if (pat.test(s)) {
 		const param = s.match(pat);
-		if(param[1]) {
+		if (param[1]) {
 			return param[1];
 		} else {
 			return "";
@@ -226,4 +460,5 @@ function getparam() {
 }
 </script>
 </body>
+
 </html>
