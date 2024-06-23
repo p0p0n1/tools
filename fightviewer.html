@@ -287,6 +287,37 @@ body {
 	background: lightgray;
 	color: black;
 }
+.center {
+	text-align: center;
+	width: 90%;
+	margin-top: 5px;
+	max-width: 600px;
+}
+#nbtn {
+	display: none;
+	border: 2px solid white;
+	padding: 20px 50px;
+	background: black;
+	border-radius: 7px;
+	box-shadow: 1px 1px 3px 0 black;
+	cursor: pointer;
+}
+.uarrow {
+	font-size: 16px;
+	color: white;
+	animation: nbtnanim step-end 3s infinite;
+}
+@keyframes nbtnanim {
+	40% {
+		opacity: 1.0;
+	}
+	50% {
+		opacity: 0;
+	}
+	60% {
+		opacity: 1.0;
+	}
+}
 	</style>
 </head>
 
@@ -298,7 +329,13 @@ body {
 		<div id="effect" class="effect">&nbsp;</div>
 		<div id="usr2" class="usrinf" onclick="next()">対戦者２<br>HP:</div>
 	</div>
-	<div id="mes" class="message" onclick="next()">&nbsp;</div>
+	<div id="mes" class="message" onclick="next()">&nbsp;
+	</div>
+	<div class="center">
+		<div id="nbtn" onclick="next()">
+			<div class="uarrow">▼</div>
+		</div>
+	</div>
 <script>
 let ta;
 let usr1;
@@ -359,6 +396,7 @@ function btl() {
 		usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
 		mes.innerHTML = logar[0];
 	}
+	document.getElementById("nbtn").style.display = "inline-block";
 }
 function init_effect() {
 	effect.classList.remove("fire");
