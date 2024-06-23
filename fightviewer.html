@@ -307,6 +307,8 @@ let mes;
 let effect;
 let name1;
 let name2;
+let hp1;
+let hp2;
 let logar;
 let turn = -1;
 getLog();
@@ -348,15 +350,13 @@ function btl() {
 	turn = 0;
 	let pt = /([^\[]+)\[HP:(\d+)\][^、]+、\s*([^\[]+)\[HP:(\d+)\][^。]+。/;
 	let r = logar[0].match(pt);
-	let hp1;
-	let hp2;
 	if (r) {
 		name1 = r[1];
-		hp1 = r[2];
+		hp1 = parseInt(r[2]);
 		name2 = r[3];
-		hp2 = r[4];
-		usr1.innerHTML = name1 + "<br>HP: " + hp1;
-		usr2.innerHTML = name2 + "<br>HP: " + hp2;
+		hp2 = parseInt(r[4]);
+		usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
+		usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
 		mes.innerHTML = logar[0];
 	}
 }
@@ -391,7 +391,7 @@ function next() {
 		}
 		return;
 	}
-	let pt1 = /ターン\d+: (.+)さん\[.+\].+/;
+	let pt1 = /ターン\d+: (.+)さん\[HP:(\d+)\].+/;
 	let pt2 = /(.+)さんさん.+\[HP:([+-]?\d+)\].+/;
 	let r1 = m[0].match(pt1);
 	let r2 = m[1].match(pt2);
@@ -420,23 +420,18 @@ function next() {
 		if(m[1].indexOf("の闇ダメージを受け、[")>0) {
 			effect.classList.add("dark");
 		}
-		if (r1[1] == name1) {
-			if (r2[1] == name2) {
-				usr2.classList.remove("xanim");
-				usr2.classList.add("xanim");
-				hp2 = r2[2];
-				usr2.innerHTML = name2 + "<br>HP: " + hp2;
-				mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
-			}
-		}
-		if (r1[1] == name2) {
-			if (r2[1] == name1) {
-				usr1.classList.remove("xanim");
-				usr1.classList.add("xanim");
-				hp1 = r2[2];
-				usr1.innerHTML = name1 + "<br>HP: " + hp1;
-				mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
-			}
+		if ( (r1[1] === name1) && (hp1 === parseInt(r1[2])) ) {
+			usr2.classList.remove("xanim");
+			usr2.classList.add("xanim");
+			hp2 = parseInt(r2[2]);
+			usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
+			mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
+		} else {
+			usr1.classList.remove("xanim");
+			usr1.classList.add("xanim");
+			hp1 = parseInt(r2[2]);
+			usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
+			mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
 		}
 	} else {
 		if (line.length !== 0) {
