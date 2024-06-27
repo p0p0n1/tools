@@ -38,6 +38,18 @@ body {
 	font-size: 18px;
 	box-shadow: 1px 1px 3px 0 black;
 }
+.usrinf_h {
+	border: 2px solid #cccc33;
+	color: #cccc33;
+}
+.usrinf_p {
+	border: 2px solid #cc8833;
+	color: #cc8833;
+}
+.usrinf_d {
+	border: 2px solid #cc0000;
+	color: #cc0000;
+}
 .effect {
 	border-radius: 100%;
 	margin: 3px 5px;
@@ -346,6 +358,8 @@ let name1;
 let name2;
 let hp1;
 let hp2;
+let max_hp1;
+let max_hp2;
 let logar;
 let turn = -1;
 getLog();
@@ -381,6 +395,7 @@ function btl() {
 	effect.addEventListener("animationend", () => {
 		init_effect();
 	});
+	init_usrcolor();
 	mes = document.getElementById("mes");
 	const t = ta.value.replace(/\r\n?/, '\n');
 	logar = t.split('\n');
@@ -390,8 +405,10 @@ function btl() {
 	if (r) {
 		name1 = r[1];
 		hp1 = parseInt(r[2]);
+		max_hp1 = hp1;
 		name2 = r[3];
 		hp2 = parseInt(r[4]);
+		max_hp2 = hp2;
 		usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
 		usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
 		mes.innerHTML = logar[0];
@@ -407,6 +424,14 @@ function init_effect() {
 	effect.classList.remove("ice");
 	effect.classList.remove("light");
 	effect.classList.remove("dark");
+}
+function init_usrcolor() {
+	usr1.classList.remove("usrinf_h");	
+	usr2.classList.remove("usrinf_h");	
+	usr1.classList.remove("usrinf_p");	
+	usr2.classList.remove("usrinf_p");	
+	usr1.classList.remove("usrinf_d");	
+	usr2.classList.remove("usrinf_d");	
 }
 function next() {
 	init_effect();
@@ -431,9 +456,18 @@ function next() {
 	}
 	let pt1 = /ターン\d+: (.+)さん\[HP:(\d+)\].+/;
 	let pt2 = /(.+)さんさん.+\[HP:([+-]?\d+)\].+/;
+	let sppt = /.+\[.+([+-])(\d+)HP\]/;
 	let r1 = m[0].match(pt1);
 	let r2 = m[1].match(pt2);
+	let spr = m[1].match(sppt);
+	let sphp = 0;
 	if ((r1 != null) && (r2 != null)) {
+		if(spr != null) {
+			sphp = parseInt(spr[2]);
+			if(spr[1]==="-") {
+				sphp *= -1;
+			}
+		}
 		if(m[1].indexOf("の火ダメージを受け、[")>0) {
 			effect.classList.add("fire");
 		}
@@ -462,14 +496,43 @@ function next() {
 			usr2.classList.remove("xanim");
 			usr2.classList.add("xanim");
 			hp2 = parseInt(r2[2]);
+			if(sphp > 0) {
+				hp1 += sphp;
+				usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
+			} else if(sphp < 0) {
+				hp2 += sphp;
+			}
 			usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
 			mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
 		} else {
 			usr1.classList.remove("xanim");
 			usr1.classList.add("xanim");
 			hp1 = parseInt(r2[2]);
+			if(sphp > 0) {
+				hp1 += sphp;
+			} else {
+				hp2 += sphp;
+			}
 			usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
 			mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
+		}
+		if( (hp1 / max_hp1) < 0.5 ) {
+			usr1.classList.add("usrinf_h");
+		}
+		if( (hp2 / max_hp2) < 0.5 ) {
+			usr2.classList.add("usrinf_h");
+		}
+		if( (hp1 / max_hp1) < 0.3 ) {
+			usr1.classList.add("usrinf_p");
+		}
+		if( (hp2 / max_hp2) < 0.3 ) {
+			usr2.classList.add("usrinf_p");
+		}
+		if( hp1 <= 0 ) {
+			usr1.classList.add("usrinf_d");
+		}
+		if( hp2 <= 0 ) {
+			usr2.classList.add("usrinf_d");
 		}
 	} else {
 		if (line.length !== 0) {
