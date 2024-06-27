@@ -499,9 +499,9 @@ function next() {
 			if(sphp > 0) {
 				hp1 += sphp;
 				usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
-			} else if(sphp < 0) {
+			} /* else if(sphp < 0) {
 				hp2 += sphp;
-			}
+			} */
 			usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
 			mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
 		} else {
@@ -509,10 +509,11 @@ function next() {
 			usr1.classList.add("xanim");
 			hp1 = parseInt(r2[2]);
 			if(sphp > 0) {
-				hp1 += sphp;
-			} else {
 				hp2 += sphp;
-			}
+				usr2.innerHTML = name2 + "<br>HP: " + String(hp2);
+			} /* else if(sphp < 0) {
+				hp2 += sphp;
+			} */
 			usr1.innerHTML = name1 + "<br>HP: " + String(hp1);
 			mes.innerHTML = m[0].replace(/ターン\d+:/, "").replace(/さん/g, "") + "<br>" + m[1].replace("さんさん", "");
 		}
