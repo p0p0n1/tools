@@ -422,7 +422,8 @@ function btl() {
 		name1 = r[1];
 		hp1 = parseInt(r[2]);
 		max_hp1 = hp1;
-		b_hp1 = hp1;
+		b_hp1 = [];
+		b_hp1[0] = hp1;
 		name2 = r[3];
 		hp2 = parseInt(r[4]);
 		max_hp2 = hp2;
@@ -480,7 +481,6 @@ function init_usrcolor() {
 	usr2.classList.remove("usrinf_d");	
 }
 function next(n) {
-	alert(b_hp1);
 	init_effect();
 	if (turn < 0) return;
 	if((turn + n) < 0) {
@@ -555,10 +555,10 @@ function next(n) {
 		}
 		let checkHp1 = (hp1 === parseInt(r1[3]));
 		if(n < 0) {
-			alert(r1[2]+":"+String(b_hp1));
-			checkHp1 = (b_hp1 === parseInt(r1[3]));
+			checkHp1 = (b_hp1[turn] === parseInt(r1[3]));
+		} else {
+			b_hp1[turn] = hp1;
 		}
-		b_hp1 = hp1;
 		if ( (r1[2] === name1) && checkHp1 ) {
 			usr2.classList.remove("xanim");
 			usr2.classList.add("xanim");
