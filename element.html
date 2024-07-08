@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>属性診断</title>
+<style>
+* {
+box-sizing: border-box;
+}
+html {
+ font-family: sans-serif;
+ width: 100%;
+}
+body {
+ margin:  0;
+ padding: 0;
+ width: 100%;
+ background: black;
+}
+.msgct {
+ position: absolute;
+ font-size: 14px;
+ border: 3px ridge #bbbbbb;
+ background: linear-gradient(0deg,#333333,#aaaaaa);
+ padding: 0;
+ margin: auto;
+ width: 100%;
+ top: 0;
+ left: 0;
+ right: 0;
+ height: 120px;
+ color: white;
+ z-index: 100;
+}
+.msgct1 {
+ position: absolute;
+ font-size: 14px;
+ border: 3px ridge #bbbbbb;
+ background: linear-gradient(0deg,#333333,#aaaaaa);
+ padding: 0;
+ margin: auto;
+ width: 100%;
+ top: 120px;
+ left: 0;
+ right: 0;
+ height: 120px;
+ color: white;
+ z-index: 100;
+}
+.msgct2 {
+ position: absolute;
+ font-size: 14px;
+ border: 3px ridge #bbbbbb;
+ background: linear-gradient(0deg,#333333,#aaaaaa);
+ padding: 0;
+ margin: auto;
+ width: 100%;
+ top: 120px;
+ left: 0;
+ right: 0;
+ color: white;
+ height: 120px;
+ transition: 500ms ease-out;
+ z-index:10;
+}
+.btnct {
+ display: inline-block;
+ position: absolute;
+ font-size: 14px;
+ border: 3px ridge #bbbbbb;
+ background: linear-gradient(0deg,#333333,#aaaaaa);
+ padding: 8px;
+ top: 240px;
+ right: 0;
+ color: white;
+ z-index: 100;
+}
+.m {
+ font-size: 16px;
+ text-shadow: 2px 2px 0 black;
+ color: white;
+ margin: 0 0 0 10px;
+}
+.ct {
+text-shadow: 2px 2px 0 black;
+color: white;
+margin: 0 0 0 45px;
+font-size: 14px;
+}
+.ctw {
+margin: 0 0 0 30px;
+}
+.ctw:before {
+content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 13 13'%3E%3Cpath stroke='black' stroke-width='1' fill='white' d='M1,10L1,7L2,7A3,3,0,0,1,4,5L4,4L7,4L7,5L11,5A1,1,0,0,1,11,7L8,7A1,3,0,0,1,7,10A2,2,0,0,1,4,9L3,9L3,10z' /%3E%3Cpath stroke='gray' stroke-width='1' fill='none' d='M3,9L3,8z' /%3E%3Cpath stroke='gray' stroke-width='1' fill='none' d='M6,5L7,5z' /%3E%3Cpath stroke='gray' stroke-width='1' fill='none' d='M7,7L7,9z' /%3E%3C/svg%3E");
+}
+.cta {
+margin: 0 0 0 30px;
+}
+.cta:before {
+content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 13 13'%3E%3Cpath stroke='black' stroke-width='1' fill='white' d='M1,10L1,7L2,7A3,3,0,0,1,4,5L4,4L7,4L7,5L11,5A1,1,0,0,1,11,7L8,7A1,3,0,0,1,7,10A2,2,0,0,1,4,9L3,9L3,10z' /%3E%3Cpath stroke='gray' stroke-width='1' fill='none' d='M3,9L3,8z' /%3E%3Cpath stroke='gray' stroke-width='1' fill='none' d='M6,5L7,5z' /%3E%3Cpath stroke='gray' stroke-width='1' fill='none' d='M7,7L7,9z' /%3E%3C/svg%3E");
+}
+.title {
+font-size: 14px;
+text-shadow: 2px 2px 0 black;
+margin: 0;
+}
+.judge{
+position: relative;
+max-width: 600px;
+width: 100%;
+}
+.moveY1 {
+ transition: 500ms ease-out;
+ translate: 0 120px;
+ height: 60px;
+}
+.moveY2 {
+ translate: 0 60px;
+ height: 60px;
+}
+.moveY3 {
+ transition: 500ms ease-out;
+ translate: 0 -120px;
+}
+.movebtn1{
+ transition: 500ms ease-out;
+ translate: 0 60px;
+}
+.movebtn2{
+ transition: 500ms ease-out;
+ translate: 0 -60px;
+}
+</style>
+</head>
+<body>
+<div class="judge">
+<div id="msgct" class="msgct"></div>
+<div id="msgct1" class="msgct1">
+<div class="title">武器の属性</div>
+<table class="selelm" align="center">
+<tr>
+<td>
+<div id="wp0" class="ct" onclick="selwp(this)">無</div>
+</td>
+<td>
+<div id="wp1" class="ct" onclick="selwp(this)">火</div>
+</td>
+<td>
+<div id="wp2" class="ct" onclick="selwp(this)">風</div>
+</td>
+</tr>
+<tr>
+<td>
+<div id="wp3" class="ct" onclick="selwp(this)">光</div>
+</td>
+<td>
+<div id="wp4" class="ct" onclick="selwp(this)">水</div>
+</td>
+<td>
+<div id="wp5" class="ct" onclick="selwp(this)">雷</div>
+</td>
+</tr>
+<tr>
+<td>
+<div id="wp6" class="ct" onclick="selwp(this)">闇</div>
+</td>
+<td>
+<div id="wp7" class="ct" onclick="selwp(this)">地</div>
+</td>
+<td>
+<div id="wp8" class="ct" onclick="selwp(this)">氷</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="msgct2" class="msgct2">
+<div class="title">防具の属性</div>
+<table class="selelm" align="center">
+<tr>
+<td>
+<div id="am0" class="ct" onclick="selarm(this)">無</div>
+</td>
+<td>
+<div id="am1" class="ct" onclick="selarm(this)">火</div>
+</td>
+<td>
+<div id="am2" class="ct" onclick="selarm(this)">風</div>
+</td>
+</tr>
+<tr>
+<td>
+<div id="am3" class="ct" onclick="selarm(this)">光</div>
+</td>
+<td>
+<div id="am4" class="ct" onclick="selarm(this)">水</div>
+</td>
+<td>
+<div id="am5" class="ct" onclick="selarm(this)">雷</div>
+</td>
+</tr>
+<tr>
+<td>
+<div id="am6" class="ct" onclick="selarm(this)">闇</div>
+</td>
+<td>
+<div id="am7" class="ct" onclick="selarm(this)">地</div>
+</td>
+<td>
+<div id="am8" class="ct" onclick="selarm(this)">氷</div>
+</td>
+</tr>
+</table>
+</div>
+<button id="btnct" class="btnct" onclick="next()">決定</button>
+</div>
+<script>
+let msg = $("msgct");
+let msg1 = $("msgct1");
+let msg2 = $("msgct2");
+let btn = $("btnct");
+let wp = -1;
+let arm = -1;
+let msgdata = [
+	"次は防具の属性を選んで決定を押しておくれ…。",
+	"武器・防具には特性や相性があるからの。<br>それを教えてしんぜよう。<br>（決定を押すと次に進みます。)",
+];
+let wmsg = [
+	"無属性の武器は闇属性の防具にはあまり効かんな。<br>光の防具には強い。そしてたまに連続攻撃が可能じゃ。<br>（決定を押すと次に進みます。)",
+	"火属性の武器は水属性の防具にはあまり効かんな。<br>氷の防具には強い。たまにやけどで追加の傷を与えるじゃろう。<br>（決定を押すと次に進みます。)",
+	"風属性の武器は雷属性の防具にはあまり効かんな。<br>地の防具には強い。たまに敵はその攻撃を避けられぬ。<br>（決定を押すと次に進みます。)",
+	"光属性の武器は無属性の防具にはあまり効かんな。<br>闇の防具には強い。たまに敵のHPを吸収し自分の物とする。<br>（決定を押すと次に進みます。)",
+	"水属性の武器は地属性の防具にはあまり効かんな。<br>火の防具には強い。たまに敵が遅くしか動けんようになる。<br>（決定を押すと次に進みます。)",
+	"雷属性の武器は氷属性の防具にはあまり効かんな。<br>風の防具には強い。たまに衝撃で敵を動けなくする事がある。<br>（決定を押すと次に進みます。)",
+	"闇属性の武器は光属性の防具にはあまり効かんな。<br>無の防具には強い。たまにやけどで追加の傷を与えるじゃろう。<br>（決定を押すと次に進みます。)",
+	"地属性の武器は風属性の防具にはあまり効かんな。<br>水の防具には強い。たまに衝撃で敵を動けなくする事がある。<br>（決定を押すと次に進みます。)",
+	"氷属性の武器は火属性の防具にはあまり効かんな。<br>雷の防具には強い。たまに敵のHPを吸収し自分の物とする。<br>（決定を押すと次に進みます。)",
+];
+let amsg = [
+	"そして防具の無属性は…闇の武器に弱く<br>光の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の火属性は…水の武器に弱く<br>氷の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の風属性は…雷の武器に弱く<br>地の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の光属性は…無の武器に弱く<br>闇の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の水属性は…地の武器に弱く<br>火の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",	
+	"そして防具の雷属性は…氷の武器に弱く<br>風の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の闇属性は…光の武器に弱く<br>無の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の地属性は…風の武器に弱く<br>水の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+	"そして防具の氷属性は…火の武器に弱く<br>雷の武器には強い。と、こんなもんじゃの。<br>（決定を押すと終了します。)",
+];
+const elm_name = ["無","火","風","光","水","雷","闇","地","氷"];
+let mesidx = 0;
+msg.innerHTML = '<div class="m">おぅ、よく来たのう…。<br>まずは武器の属性を選んで決定を押すんじゃ。</div>';
+const bkmsg1 = msg1.innerHTML;
+const bkmsg2 = msg2.innerHTML;
+function selwp(e) {
+	let ctw = document.getElementsByClassName("ctw");
+	for (let i = 0; i < ctw.length; i++) {
+		ctw[i].classList.remove("ctw");
+	}
+	if ($('wp0') === e) wp = 0;
+	if ($('wp1') === e) wp = 1;
+	if ($('wp2') === e) wp = 2;
+	if ($('wp3') === e) wp = 3;
+	if ($('wp4') === e) wp = 4;
+	if ($('wp5') === e) wp = 5;
+	if ($('wp6') === e) wp = 6;
+	if ($('wp7') === e) wp = 7;
+	if ($('wp8') === e) wp = 8;
+	e.classList.add("ctw");
+}
+
+function selarm(e) {
+	let cta = document.getElementsByClassName("cta");
+	for (let i = 0; i < cta.length; i++) {
+		cta[i].classList.remove("cta");
+	}
+	if ($('am0') === e) arm = 0;
+	if ($('am1') === e) arm = 1;
+	if ($('am2') === e) arm = 2;
+	if ($('am3') === e) arm = 3;
+	if ($('am4') === e) arm = 4;
+	if ($('am5') === e) arm = 5;
+	if ($('am6') === e) arm = 6;
+	if ($('am7') === e) arm = 7;
+	if ($('am8') === e) arm = 8;
+	e.classList.add("cta");
+}
+
+function next() {
+	if(mesidx === 0) {
+		msg2.style.display = "block";
+		if (wp < 0) {
+			return;
+		}
+		msg.innerHTML = '<div class="m">ふむ…武器は'+elm_name[wp]+"属性か。<br>"+msgdata[mesidx]+'</div>';
+		msg1.innerHTML = '<div class="ct">武器の属性：'+elm_name[wp]+'</div>';
+		msg1.classList.add('moveY1');
+		btn.classList.add('movebtn1');
+		mesidx++;
+	} else if(mesidx === 1) {
+		if(arm < 0) {
+			return;
+		}
+		msg1.style.height = "60px";
+		msg1.style.top = "240px";
+		btn.style.top = "300px";
+		msg.innerHTML = '<div class="m">なるほど、防具は'+elm_name[arm]+"属性か。<br>"+msgdata[mesidx]+'</div>';
+		msg2.innerHTML = '<div class="ct">防具の属性：'+elm_name[arm]+'</div>';
+		msg1.classList.remove('moveY1');
+		btn.classList.remove('movebtn1');
+		msg1.classList.add('moveY3');
+		msg2.classList.add('moveY2');
+		btn.classList.add('movebtn2');
+		mesidx++;
+	} else if(mesidx === 2) {
+		msg.innerHTML = '<div class="m">'+wmsg[wp]+'</div>';
+		mesidx++;
+	} else if(mesidx === 3) {
+		msg.innerHTML = '<div class="m">'+amsg[arm]+'</div>';
+		mesidx = -1;
+	} else {
+		msg.innerHTML = '<div class="m">おぅ、よく来たのう…。<br>まずは武器の属性を選んで決定を押すんじゃ。</div>';
+		msg1.innerHTML = bkmsg1;
+		msg2.innerHTML = bkmsg2;
+		msg2.style.display = "none";
+		msg1.classList.remove('moveY3');
+		msg2.classList.remove('moveY2');
+		btn.classList.remove('movebtn2');
+
+		msg1.style.height = "";
+		msg1.style.top = "";
+		btn.style.top = "";
+		mesidx = 0;
+		wp = -1;
+		arm = -1;
+	}
+}
+function $(id) {
+	return document.getElementById(id);
+}
+</script>
+
+</body>
+</html>

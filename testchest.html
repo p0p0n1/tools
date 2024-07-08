@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="./mt.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宝箱の実験</title>
+<style>
+html {
+ font-family: sans-serif;
+}
+body {
+ margin:  0;
+ padding: 0;
+ width: 100%;
+ background: #eeeeee;
+}
+.main {
+ margin: 5px;
+ border: 1px solid gray;
+ padding: 10px;
+ background: white;
+}
+#cv {
+    border: 1px solid black;
+    width: 200px;
+    height: 200px;
+}
+td.d {
+    white-space: nowrap;
+    border-radius: 5px;
+    background: white;
+    padding:5px;
+    border: 1px solid gray;
+}
+.ur {
+    display: inline-block;
+    line-height: 1.1;
+    background: linear-gradient(transparent 80%, #f45d01 15%);
+}
+.ssr {
+    display: inline-block;
+    line-height: 1.1;
+    background: linear-gradient(transparent 80%, #a633d6 15%);
+}
+.o {
+    display: inline-block;
+}
+.ua_anim {
+    display: inline-block;
+    animation: uaop 1s infinite;
+}
+@keyframes uaop {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1.0;
+    }
+}
+#uames {
+    font-size: 16px;
+    line-height: 1.1;
+    opacity: 0;
+}
+.mes {
+    width: 120px;
+    vertical-align: top;
+    padding: 20px 0 0 5px;
+}
+.r {
+    text-align: right;
+}
+</style>
+</head>
+<body>
+<div class="main">
+    <table align="center">
+    <tr>
+    <td>
+        <div id="uames"><div id="ua" class="ua_anim">↓</div>この橙がURx12です</div>
+        <canvas id="cv" width="200" height="200"></canvas>
+    </td>
+    <td id="mes" class="mes">
+        宝箱の実験<br>へようこそ！
+    </td>
+    </tr>
+    <tr>
+        <td class="r" colspan="2"><button onclick="next()">次へ</button></td>
+    </tr>
+    </table>
+</div>
+<div id="ctable"></div>
+<script>
+let cv = $('cv');
+let ctx = cv.getContext("2d");
+let imgData = ctx.getImageData(0,0,200,200);
+let mt = new MersenneTwister();
+mt.setSeed(mt.nextInt());
+const ur_r = 255;
+const ur_g = 85;
+const ur_b = 0;
+const ssr_r = 153;
+const ssr_g = 68;
+const ssr_b = 204;
+const sr_r = 34;
+const sr_g = 119;
+const sr_b = 221;
+const r_r = 51;
+const r_g = 170;
+const r_b = 51;
+const n_r = 255;
+const n_g = 255;
+const n_b = 255;
+const ur_num = 3;
+const ssr_num = 17;
+const sr_num = 150;
+const r_num = 1500;
+const n_num = 8330;
+const items = Array(40000);
+const rdm = Array(40000);
+let counter = [];
+let mes_no = 0;
+let mes = $('mes');
+init_data();
+async function next() {
+    if(mes_no<0) return;
+    if(mes_no===0) {
+        mes.innerHTML = "早速ですが左に宝箱10,000個分のデータを用意しました。<br>1個の点が1アイテム、200x200個になります。";
+        mes_no++;
+    } else if (mes_no===1) {
+        mes.innerHTML = "ちなみに左上のオレンジの線がURです。<br>この時点でレア度がわかりますね…。<br>※URは1万中3個4万中12個";
+        $('uames').style.opacity = "1.0";
+        mes_no++;
+    } else if (mes_no===2) {
+        $('uames').style.opacity = "0";
+        mes.innerHTML = "ではデータをランダムにします。";
+        mes_no++;
+    } else if (mes_no===3) {
+       mes_no = -1;
+       mes.innerHTML = "少々お待ち下さい…";
+       await FisherYates(items);
+       await Schwartzian();
+       mes_no= 3;
+       mes.innerHTML = "白(N)の中にアイテムがバラバラに設置されました。これを左上から宝箱100個(400アイテム)ずつ開けます。";
+        mes_no++;
+    } else if (mes_no===4) {
+        mes.innerHTML = "表は宝箱100個(🔑1,000)毎に何個当たったかです。※実際の物とはやり方がおそらく全く違います。確率の参考程度に。<br>以上でした。";
+        $('ctable').innerHTML = count_list();
+        mes_no++;
+    } else {
+        init_data();
+        $('ctable').innerHTML = "";
+        mes.innerHTML = "宝箱シミュ<br>へようこそ！";
+        mes_no = 0;
+    }
+}
+async function FisherYates(ar) {
+	var n = ar.length;
+	for(var i = (n - 1); i > 0; i--) {
+		var j = Math.floor(mt.next() * (i + 1));
+    swapItemData(ar,i,j);
+    swapImageData(i,j);
+    if((i%200)==0){
+      await waitDraw();
+    }
+   }
+}
+async function Schwartzian() {
+    fillRdm(rdm);
+    await quicksort(rdm, 0, rdm.length-1);
+}
+function count_items() {
+    let ur = 0;
+    let ssr = 0;
+    for(let i = 0; i < items.length; i++) {
+        if(items[i]==0) {
+            ur++;
+        } else if (items[i]==1) {
+            ssr++;
+        }
+        // 40アイテムx10: 大型宝箱10個分ずつカウント
+        if( ((i+1) % 400)==0 ) {
+            counter[Math.floor(i/400)] = {
+                ur: ur,
+                ssr: ssr
+            };
+            ur = 0;
+            ssr = 0;
+        }
+    }
+}
+function count_list() {
+    count_items();
+    let ret = "";
+    let rows = "";
+    let clsUR = "";
+    for (let i = 0; i < counter.length; i++) {
+        if(counter[i].ur !== 0) {
+            clsUR = "ur";
+        } else {
+            clsUR = "o";
+        }
+        if(counter[i].ssr !== 0) {
+            clsSSR = "ssr";
+        } else {
+            clsSSR = "o";
+        }
+        rows += '<td class="d">'+String(i*100+1)+'〜<br>'+String((i+1)*100)+'個<br><div class="'+clsUR+'">UR:'+String(counter[i].ur)+'</div><br><div class="'+clsSSR+'">SSR:'+String(counter[i].ssr)+'</div></td>';
+        if(((i+1) % 5)==0) {
+            ret += '<tr>'+rows+'</tr>';
+            rows = "";
+        }
+    }
+    ret += '<tr>'+rows+'</tr>';
+    return '<table align="center" cellspacing="3" cellpadding="5">'+ret+'</table>';
+}
+function init_data() {
+    const ur_t = ur_num * 4;
+    const ssr_t = ssr_num * 4;
+    const sr_t = sr_num * 4;
+    const r_t = r_num * 4;
+    for(let i = 0; i < items.length; i++) {
+        items[i] = 4;
+    }
+    for(let i = 0; i < imgData.data.length; i++) {
+        imgData.data[i] = 255;
+        imgData.data[i+1] = 255;
+        imgData.data[i+2] = 255;
+        imgData.data[i+3] = 255;
+    }
+    for(let i = 0; i < ur_t; i++) {
+        items[i] = 0;
+        imgData.data[i*4] = ur_r;
+        imgData.data[i*4+1] = ur_g;
+        imgData.data[i*4+2] = ur_b;
+    }
+    for(let i = ur_t; i < (ur_t + ssr_t); i++) {
+        items[i] = 1;
+        imgData.data[i*4] = ssr_r;
+        imgData.data[i*4+1] = ssr_g;
+        imgData.data[i*4+2] = ssr_b;
+    }
+    for(let i = (ur_t + ssr_t); i < (ur_t + ssr_t + sr_t); i++) {
+        items[i] = 2;
+        imgData.data[i*4] = sr_r;
+        imgData.data[i*4+1] = sr_g;
+        imgData.data[i*4+2] = sr_b;
+    }
+    for(let i = (ur_t + ssr_t + sr_t); i < (ur_t + ssr_t + sr_t + r_t); i++) {
+        items[i] = 3;
+        imgData.data[i*4] = r_r;
+        imgData.data[i*4+1] = r_g;
+        imgData.data[i*4+2] = r_b;
+    }
+    ctx.putImageData(imgData,0,0);
+}
+function fillRdm(ar) {
+	for (let i = 0; i < ar.length; i++) {
+		ar[i] = mt.next();
+	}
+}
+async function quicksort(data, start, end) {
+    if(start >= end) return;
+    let idx = await partition(data, start, end);
+    await quicksort(data, start, idx - 1),
+    await quicksort(data, idx+1, end)
+}
+async function partition(data, start, end) {
+    let pvtIdx = start;
+    let pvtVal = data[end];
+    for (let i = start; i < end; i++) {
+        if(data[i] < pvtVal) {
+            swapData(data, i, pvtIdx);
+            if((i%500)==0){
+              await waitDraw();
+            }
+            pvtIdx++;
+        }
+    }
+    swapData(data, pvtIdx, end);
+    return pvtIdx;
+}
+function swapData(data, i, j) {
+    const tmp = data[j];
+    data[j] = data[i];
+    data[i] = tmp;
+    swapItemData(items,i,j);
+    swapImageData(i,j);
+}
+function swapItemData(data, i, j) {
+    const tmp = data[j];
+    data[j] = data[i];
+    data[i] = tmp;
+}
+function waitDraw() {
+ return new Promise((r)=>{
+    setTimeout(()=>{
+      ctx.putImageData(imgData,0,0);
+      r();
+    },5);
+ });
+}
+function swapImageData(i,j) {
+    let idx1 = i * 4;
+    let idx2 = j * 4;
+    const r = imgData.data[idx1];
+    const g = imgData.data[idx1+1];
+    const b = imgData.data[idx1+2];
+//    const a = imgData.data[idx1+3];
+    imgData.data[idx1] = imgData.data[idx2];
+    imgData.data[idx1+1] = imgData.data[idx2+1];
+    imgData.data[idx1+2] = imgData.data[idx2+2];
+//    imgData.data[idx1+3] = imgData.data[idx2+3];
+    imgData.data[idx2] = r;
+    imgData.data[idx2+1] = g;
+    imgData.data[idx2+2] = b;
+//    imgData.data[idx2+3] = a;
+}
+function $(id) {
+    return document.getElementById(id);
+}
+</script>
+
+</body>
+</html>
