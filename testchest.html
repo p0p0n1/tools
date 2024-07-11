@@ -159,12 +159,12 @@ async function FisherYates(ar) {
 	var n = ar.length;
 	for(var i = (n - 1); i > 0; i--) {
 		var j = Math.floor(mt.next() * (i + 1));
-    swapItemData(ar,i,j);
-    swapImageData(i,j);
-    if((i%200)==0){
-      await waitDraw();
-    }
-   }
+		swapItemData(ar,i,j);
+		swapImageData(i,j);
+		if((i%200)==0){
+			await waitDraw();
+		}
+	}
 }
 async function Schwartzian() {
     fillRdm(rdm);
@@ -261,10 +261,10 @@ function fillRdm(ar) {
 	}
 }
 async function quicksort(data, start, end) {
-    if(start >= end) return;
-    let idx = await partition(data, start, end);
-    await quicksort(data, start, idx - 1),
-    await quicksort(data, idx+1, end)
+	if(start >= end) return;
+	let idx = await partition(data, start, end);
+	await quicksort(data, start, idx - 1);
+	await quicksort(data, idx+1, end);
 }
 async function partition(data, start, end) {
     let pvtIdx = start;
